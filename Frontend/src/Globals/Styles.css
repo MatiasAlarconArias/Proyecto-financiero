@@ -1,0 +1,14 @@
+/* Global styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg-dark);
+  color: white;
+}
+
+.Container {
+  max-width: 61%;
+  margin: 0 auto;
+}
