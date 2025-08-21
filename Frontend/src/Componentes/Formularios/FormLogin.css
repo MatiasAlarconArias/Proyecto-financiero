@@ -1,0 +1,114 @@
+.Login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f5f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.Container-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: auto;
+  width: 380px;
+  padding: 2rem;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.25s ease;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Container-form h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.Container-form h2 {
+  text-align: center;
+  font-size: 1.3rem; /* más grande que antes */
+  font-weight: 600; /* más marcado */
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: #333; /* un poco más oscuro para mejor contraste */
+}
+
+hr {
+  width: 100%;
+  border: 0;
+  height: 1px;
+  background: #ddd;
+  margin: 15px 0;
+}
+
+.container-input {
+  display: flex;
+  flex-direction: column;
+  margin: 0.8rem 0;
+  text-align: center; /* centramos el texto */
+}
+
+.container-input span {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.container-input input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container-input input:focus {
+  border-color: #1e90ff;
+  box-shadow: 0 0 4px rgba(30, 144, 255, 0.4);
+  outline: none;
+}
+
+button {
+  padding: 0.7rem;
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, #1e90ff, #0077ff);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #0077ff, #0056cc);
+  transform: scale(1.03);
+}
+
+p {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+p a {
+  color: #1e90ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}

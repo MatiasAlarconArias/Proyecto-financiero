@@ -1,14 +1,55 @@
 /* Global styles */
+:root {
+  /* Colores */
+  --color-bg-dark: #f5f5f5; /* Gris claro como fondo oscuro (ajustado para tu variable existente) */
+  --color-primary: #1e90ff; /* Azul para fondos destacados y botones */
+  --color-secondary: #32cd32; /* Verde para ingresos y progreso */
+  --color-tertiary: #ff4500; /* Rojo para gastos y excesos */
+  --color-accent-purple: #8a2be2; /* Morado para categorías como Inversiones */
+  --color-accent-orange: #ffa500; /* Naranja para categorías como Transporte */
+  --color-accent-yellow: #ffd700; /* Amarillo para categorías como Educación */
+  --color-neutral-gray: #d3d3d3; /* Gris para fondos secundarios y bordes */
+  --color-text-primary: #333333; /* Negro suave para texto principal */
+  --color-text-secondary: #666666; /* Gris oscuro para texto secundario */
+  --color-background: #ffffff; /* Fondo principal blanco */
+
+  /* Tipografía */
+  --font-family: 'Roboto', 'Open Sans', sans-serif;
+  --font-size-base: 14px;
+  --font-size-heading: 16px;
+  --font-size-small: 12px;
+
+  /* Espaciado */
+  --spacing-base: 16px;
+  --spacing-small: 8px;
+  --spacing-medium: 12px;
+
+  /* Bordes y Sombras */
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Botones */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #ffffff;
+  --button-secondary-border: var(--color-primary);
+  --button-secondary-text: var(--color-primary);
+  --button-hover-brightness: 90%; /* Reducción de brillo en hover */
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
   min-height: 100vh;
   background-color: var(--color-bg-dark);
-  color: white;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
 }
 
 .Container {
   max-width: 61%;
   margin: 0 auto;
+  padding: var(--spacing-base);
 }
