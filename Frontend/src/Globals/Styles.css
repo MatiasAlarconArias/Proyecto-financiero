@@ -14,7 +14,7 @@
   --color-background: #ffffff; /* Fondo principal blanco */
 
   /* Tipografía */
-  --font-family: 'Roboto', 'Open Sans', sans-serif;
+  --font-family: 'Inter', sans-serif;
   --font-size-base: 14px;
   --font-size-heading: 16px;
   --font-size-small: 12px;
@@ -37,19 +37,20 @@
   --button-hover-brightness: 90%; /* Reducción de brillo en hover */
 }
 
-body,
-html {
+/* Reset global */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
   min-height: 100vh;
-  background-color: var(--color-bg-dark);
   font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  color: var(--color-text-primary);
 }
 
 .Container {
   max-width: 61%;
   margin: 0 auto;
-  padding: var(--spacing-base);
 }

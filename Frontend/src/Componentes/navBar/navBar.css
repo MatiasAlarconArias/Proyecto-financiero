@@ -1,0 +1,39 @@
+.Header {
+  background-color: var(--color-neutral-gray);
+}
+
+.header_opciones {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_opciones img {
+  width: 2rem;
+}
+
+.Header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+li a {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.2s ease-in-out;
+}
+
+li a:hover {
+  color: #2563eb; /* un azul moderno */
+}
