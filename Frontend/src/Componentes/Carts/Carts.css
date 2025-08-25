@@ -1,0 +1,71 @@
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 2.5rem 0;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-secondary);
+}
+
+/* Valores */
+.card-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.card-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* Colores personalizados */
+.green {
+  color: var(--color-secondary); /* verde ingresos */
+}
+
+.red {
+  color: var(--color-tertiary); /* rojo gastos */
+}
+
+.blue {
+  color: var(--color-primary); /* azul meta */
+}
+
+/* Tarjeta especial de saldo total */
+.card-total {
+  background: linear-gradient(135deg, #1e90ff, #0077ff);
+  color: #fff;
+}
+
+.card-total .card-header {
+  color: #fff;
+}
+
+.card-total .card-value,
+.card-total .card-subtitle {
+  color: #fff;
+}

@@ -37,11 +37,11 @@ form {
 
 .Container-form h2 {
   text-align: center;
-  font-size: 1.3rem; /* más grande que antes */
-  font-weight: 600; /* más marcado */
+  font-size: 1.3rem;
+  font-weight: 600;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
-  color: #333; /* un poco más oscuro para mejor contraste */
+  color: #333;
 }
 
 hr {
@@ -56,7 +56,7 @@ hr {
   display: flex;
   flex-direction: column;
   margin: 0.8rem 0;
-  text-align: center; /* centramos el texto */
+  text-align: center;
 }
 
 .container-input span {
@@ -97,18 +97,19 @@ button:hover {
   transform: scale(1.03);
 }
 
-p {
+/* ✅ ahora solo afecta a los <p> dentro del formulario */
+.Container-form p {
   text-align: center;
   margin-top: 1rem;
   font-size: 0.9rem;
 }
 
-p a {
+.Container-form p a {
   color: #1e90ff;
   font-weight: 600;
   text-decoration: none;
 }
 
-p a:hover {
+.Container-form p a:hover {
   text-decoration: underline;
 }

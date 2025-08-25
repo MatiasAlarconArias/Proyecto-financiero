@@ -1,4 +1,5 @@
 import NavBar from '../Componentes/navBar/navBar';
+import Carts from '../Componentes/Carts/Carts';
 
 export default function Dashboard() {
   return (
@@ -6,7 +7,9 @@ export default function Dashboard() {
       <div>
         <NavBar />
       </div>
-      <div className="Container"></div>
+      <div className="Container">
+        <Carts />
+      </div>
     </>
   );
 }

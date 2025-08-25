@@ -13,10 +13,19 @@ export default function NavBar() {
                   <a href="/dashboard">Dashboard</a>
                 </li>
                 <li>
-                  <a href="/dashboard">Perfil</a>
+                  <a href="/dashboard">Cuentas</a>
                 </li>
                 <li>
-                  <a href="/dashboard">Configuración</a>
+                  <a href="/dashboard">Transacciones</a>
+                </li>
+                <li>
+                  <a href="/dashboard">Presupuesto</a>
+                </li>
+                <li>
+                  <a href="/dashboard">Metas</a>
+                </li>
+                <li>
+                  <a href="/dashboard">Categoria</a>
                 </li>
                 <li>
                   <a href="/">Cerrar Sesion</a>
