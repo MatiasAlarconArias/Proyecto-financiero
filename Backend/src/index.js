@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser'); // ⬅️ Necesario para leer cookies
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use(
 app.use(morgan('dev'));
 
 // ✅ Rutas de la API
+
+app.use('/api/auth', authRoutes);
 
 // ✅ Conexión a la base de datos
 connectDB();
