@@ -7,9 +7,11 @@ export default function Dashboard() {
       <div>
         <NavBar />
       </div>
-      <div className="Container">
-        <Carts />
-      </div>
+      <section>
+        <div className="Container">
+          <Carts />
+        </div>
+      </section>
     </>
   );
 }
