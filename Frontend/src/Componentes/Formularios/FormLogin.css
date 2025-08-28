@@ -79,7 +79,8 @@ hr {
   outline: none;
 }
 
-button {
+/* Ahora solo aplica a los botones dentro del formulario */
+.Container-form button {
   padding: 0.7rem;
   margin-top: 0.5rem;
   background: linear-gradient(135deg, #1e90ff, #0077ff);
@@ -92,7 +93,7 @@ button {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-button:hover {
+.Container-form button:hover {
   background: linear-gradient(135deg, #0077ff, #0056cc);
   transform: scale(1.03);
 }

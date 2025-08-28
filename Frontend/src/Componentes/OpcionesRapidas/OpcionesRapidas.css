@@ -1,0 +1,36 @@
+.cotenendor-botones {
+  display: flex; /* 🔑 pone los botones en fila */
+  gap: 0.8rem; /* espacio entre botones */
+  flex-wrap: wrap; /* permite que bajen si no caben en una línea */
+
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--box-shadow);
+}
+
+.Contenedor h1 {
+  font-size: 1.5rem;
+  padding: 1rem 0;
+}
+
+.cotenendor-botones button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.cotenendor-botones button:hover {
+  border-color: #1e90ff;
+  color: #1e90ff;
+  background: #f8faff;
+}
