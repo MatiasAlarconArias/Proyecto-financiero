@@ -1,6 +1,30 @@
+import { useEffect, useState } from 'react';
 import './Carts.css';
 
 export default function Carts() {
+  const [totalBalance, setTotalBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchTotalBalance = async () => {
+      try {
+        const res = await fetch('http://localhost:4000/api/accounts/totals/all', {
+          credentials: 'include', // si usas cookies/JWT en auth
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await res.json();
+        // si no viene nada, forzamos 0
+        setTotalBalance(data.totalBalance ?? 0);
+      } catch (error) {
+        console.error('Error al obtener saldo total:', error);
+        setTotalBalance(0); // fallback en caso de error
+      }
+    };
+
+    fetchTotalBalance();
+  }, []);
+
   return (
     <div className="cards-container">
       {/* Saldo total */}
@@ -8,7 +32,9 @@ export default function Carts() {
         <div className="card-header">
           <h4>Saldo Total</h4>
         </div>
-        <p className="card-value">$28.750,5</p>
+        <p className="card-value">
+          {totalBalance !== null ? `$${totalBalance.toLocaleString()}` : 'Cargando...'}
+        </p>
         <p className="card-subtitle">Todas las cuentas</p>
       </div>
 

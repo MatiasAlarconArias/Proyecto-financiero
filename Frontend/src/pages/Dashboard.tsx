@@ -14,6 +14,9 @@ export default function Dashboard() {
         </div>
       </section>
       <section>
+        <div></div>
+      </section>
+      <section>
         <OpcionesRapidas />
       </section>
     </>

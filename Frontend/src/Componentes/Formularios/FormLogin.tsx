@@ -20,9 +20,6 @@ export default function FormLogin() {
 
       const data = await res.json();
       if (res.ok) {
-        alert('Inicio de sesión exitoso ✅');
-
-        // Guardar usuario y token
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
 

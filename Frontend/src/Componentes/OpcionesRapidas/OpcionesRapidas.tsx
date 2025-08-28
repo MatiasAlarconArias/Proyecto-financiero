@@ -5,12 +5,12 @@ export default function OpcionesRapidas() {
     <>
       <div className="Contenedor">
         <div className="Container">
-          <h1>Opciones rapidas</h1>
+          <h1>Aciones Rapidas</h1>
           <div className="cotenendor-botones">
             <button>Crear Cuenta</button>
-            <button>Crear transaccion</button>
-            <button>Crear presupuesto</button>
-            <button>Crear meta</button>
+            <button>Crear Transaccion</button>
+            <button>Crear Presupuesto</button>
+            <button>Crear Meta</button>
             <button>Crear categoria</button>
           </div>
         </div>
