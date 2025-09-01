@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser'); // ⬅️ Necesario para leer cookies
 const authRoutes = require('./routes/auth.routes');
-
+const transactionRoutes = require('./routes/Transaction.routes');
+const accountRoutes = require('./routes/Account.routes');
 const app = express();
 
 // ✅ Middleware para aceptar JSON
@@ -27,6 +28,8 @@ app.use(morgan('dev'));
 // ✅ Rutas de la API
 
 app.use('/api/auth', authRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/accounts', accountRoutes);
 
 // ✅ Conexión a la base de datos
 connectDB();

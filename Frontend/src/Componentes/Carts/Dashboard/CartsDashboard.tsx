@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react';
-import './Carts.css';
+import './CartsDashboard.css';
 
-export default function Carts() {
-  const [totalBalance, setTotalBalance] = useState<number | null>(null);
+export default function CartsDashboard() {
+  const [totalBalance, setTotalBalance] = useState<number>(0);
 
   useEffect(() => {
     const fetchTotalBalance = async () => {
       try {
         const res = await fetch('http://localhost:4000/api/accounts/totals/all', {
-          credentials: 'include', // si usas cookies/JWT en auth
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          credentials: 'include',
         });
         const data = await res.json();
-        // si no viene nada, forzamos 0
         setTotalBalance(data.totalBalance ?? 0);
       } catch (error) {
         console.error('Error al obtener saldo total:', error);
-        setTotalBalance(0); // fallback en caso de error
+        setTotalBalance(0);
       }
     };
 
@@ -32,37 +28,35 @@ export default function Carts() {
         <div className="card-header">
           <h4>Saldo Total</h4>
         </div>
-        <p className="card-value">
-          {totalBalance !== null ? `$${totalBalance.toLocaleString()}` : 'Cargando...'}
-        </p>
+        <p className="card-value">${totalBalance.toLocaleString()}</p>
         <p className="card-subtitle">Todas las cuentas</p>
       </div>
 
-      {/* Ingresos */}
-      <div className="card card-ingresos">
+      {/* Ingresos del mes */}
+      <div className="card">
         <div className="card-header">
           <h4>Ingresos del Mes</h4>
         </div>
-        <p className="card-value green">$5.700</p>
-        <p className="card-subtitle">+8.2% vs mes anterior</p>
+        <p className="card-value green">$0</p>
+        <p className="card-subtitle">+0% vs mes anterior</p>
       </div>
 
-      {/* Gastos */}
-      <div className="card card-gastos">
+      {/* Gastos del mes */}
+      <div className="card">
         <div className="card-header">
           <h4>Gastos del Mes</h4>
         </div>
-        <p className="card-value red">$4.100</p>
-        <p className="card-subtitle">-3.1% vs mes anterior</p>
+        <p className="card-value red">$0</p>
+        <p className="card-subtitle">-0% vs mes anterior</p>
       </div>
 
-      {/* Meta ahorro */}
-      <div className="card card-ahorro">
+      {/* Meta de ahorro */}
+      <div className="card">
         <div className="card-header">
           <h4>Meta de Ahorro</h4>
         </div>
-        <p className="card-value blue">75%</p>
-        <p className="card-subtitle">$3.750 de $5.000</p>
+        <p className="card-value blue">0%</p>
+        <p className="card-subtitle">$0 de $0</p>
       </div>
     </div>
   );
