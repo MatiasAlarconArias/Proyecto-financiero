@@ -1,9 +1,10 @@
-import Transaction from '../models/Transaction.js';
-import Account from '../models/Account.js';
-import Category from '../models/Category.js';
+// controllers/transaction.controller.js
+const Transaction = require('../models/transaction.model');
+const Account = require('../models/Account.model');
+const Category = require('../models/Category.model');
 
 // Crear transacción
-export const createTransaction = async (req, res) => {
+const createTransaction = async (req, res) => {
   try {
     const { accountId, type, categoryId, description, amount, date } = req.body;
     const userId = req.user.id;
@@ -40,7 +41,7 @@ export const createTransaction = async (req, res) => {
 };
 
 // Obtener transacciones (con filtros)
-export const getTransactions = async (req, res) => {
+const getTransactions = async (req, res) => {
   try {
     const filters = { userId: req.user.id };
 
@@ -48,7 +49,6 @@ export const getTransactions = async (req, res) => {
     if (req.query.categoryId) filters.categoryId = req.query.categoryId;
     if (req.query.type) filters.type = req.query.type;
 
-    // filtro por rango de fechas
     if (req.query.startDate && req.query.endDate) {
       filters.date = {
         $gte: new Date(req.query.startDate),
@@ -67,7 +67,7 @@ export const getTransactions = async (req, res) => {
 };
 
 // Obtener transacción por ID
-export const getTransactionById = async (req, res) => {
+const getTransactionById = async (req, res) => {
   try {
     const transaction = await Transaction.findOne({
       _id: req.params.id,
@@ -82,7 +82,7 @@ export const getTransactionById = async (req, res) => {
 };
 
 // Actualizar transacción
-export const updateTransaction = async (req, res) => {
+const updateTransaction = async (req, res) => {
   try {
     const { description, categoryId, amount } = req.body;
 
@@ -98,7 +98,6 @@ export const updateTransaction = async (req, res) => {
     if (transaction.type === 'Ingreso') account.balance -= transaction.amount;
     if (transaction.type === 'Gasto') account.balance += transaction.amount;
 
-    // actualizar campos
     if (description) transaction.description = description;
     if (categoryId) transaction.categoryId = categoryId;
     if (amount) transaction.amount = amount;
@@ -117,7 +116,7 @@ export const updateTransaction = async (req, res) => {
 };
 
 // Eliminar transacción
-export const deleteTransaction = async (req, res) => {
+const deleteTransaction = async (req, res) => {
   try {
     const transaction = await Transaction.findOne({
       _id: req.params.id,
@@ -138,8 +137,8 @@ export const deleteTransaction = async (req, res) => {
   }
 };
 
-// Resumen para dashboard (ingresos, gastos, neto)
-export const getTransactionSummary = async (req, res) => {
+// Resumen para dashboard
+const getTransactionSummary = async (req, res) => {
   try {
     const userId = req.user.id;
     const { month, year } = req.query;
@@ -168,4 +167,13 @@ export const getTransactionSummary = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+module.exports = {
+  createTransaction,
+  getTransactions,
+  getTransactionById,
+  updateTransaction,
+  deleteTransaction,
+  getTransactionSummary,
 };
