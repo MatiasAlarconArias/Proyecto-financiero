@@ -1,0 +1,98 @@
+.formulario-crear-cuenta {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow, 0 2px 6px rgba(0, 0, 0, 0.1));
+  width: 100%; /* ocupa todo el ancho del contenedor */
+  max-width: none; /* elimina el límite de 800px */
+  margin: 0 auto;
+}
+
+.formulario-crear-cuenta h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.campo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem; /* 🔹 agrega separación */
+}
+
+.fila {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.campo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #111;
+}
+
+.campo input,
+.campo select {
+  padding: 0.5rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #f9f9f9;
+  transition: all 0.2s ease;
+}
+
+.campo input:focus,
+.campo select:focus {
+  border-color: #1e90ff;
+  outline: none;
+  background: #fff;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.btn-primario {
+  background: #000;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.25s ease;
+}
+
+.btn-primario:hover {
+  background: #222;
+}
+
+.btn-secundario {
+  background: #fff;
+  color: #333;
+  padding: 0.5rem 1.2rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.btn-secundario:hover {
+  border-color: #1e90ff;
+  color: #1e90ff;
+  background: #f8faff;
+}
