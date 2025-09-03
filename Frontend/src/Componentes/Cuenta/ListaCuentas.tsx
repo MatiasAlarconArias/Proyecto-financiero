@@ -10,27 +10,59 @@ interface Cuenta {
   bankName?: string;
 }
 
-export default function ListaCuentas() {
+interface ListaCuentasProps {
+  onCuentaEliminada?: () => void;
+}
+
+export default function ListaCuentas({ onCuentaEliminada }: ListaCuentasProps) {
   const [cuentas, setCuentas] = useState<Cuenta[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCuentas = async () => {
-      try {
-        const res = await fetch('http://localhost:3000/api/accounts', {
-          credentials: 'include',
-        });
-        const data = await res.json();
-        setCuentas(data);
-      } catch (error) {
-        console.error('Error al obtener cuentas:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchCuentas = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/accounts', {
+        credentials: 'include',
+      });
+      const data = await res.json();
+      setCuentas(data);
+    } catch (error) {
+      console.error('Error al obtener cuentas:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCuentas();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta cuenta?')) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:3000/api/accounts/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Error al eliminar la cuenta');
+      }
+
+      // Quitar la cuenta eliminada del estado
+      setCuentas((prev) => prev.filter((c) => c._id !== id));
+
+      // Avisar al padre para refrescar también las cards
+      if (onCuentaEliminada) onCuentaEliminada();
+    } catch (error) {
+      console.error('Error al eliminar cuenta:', error);
+      alert('❌ No se pudo eliminar la cuenta');
+    }
+  };
 
   if (loading) return <p>Cargando cuentas...</p>;
   if (cuentas.length === 0) return <p>No tienes cuentas registradas.</p>;
@@ -54,7 +86,6 @@ export default function ListaCuentas() {
     <div className="cards-grid">
       {cuentas.map((cuenta) => (
         <div key={cuenta._id} className="account-card">
-          {/* Cabecera */}
           <div className="account-header">
             <h3 className="account-title">
               Cuenta {cuenta.type} Nº {cuenta.number}
@@ -64,10 +95,8 @@ export default function ListaCuentas() {
             </span>
           </div>
 
-          {/* Banco */}
           <p className="account-subtitle">{cuenta.bankName || 'Banco no especificado'}</p>
 
-          {/* Saldo */}
           <p
             className="account-balance"
             style={{
@@ -77,10 +106,11 @@ export default function ListaCuentas() {
             ${cuenta.balance.toLocaleString()} {cuenta.currency}
           </p>
 
-          {/* Botones */}
           <div className="account-actions">
             <button className="btn-secondary">Editar</button>
-            <button className="btn-danger">Eliminar</button>
+            <button className="btn-danger" onClick={() => handleDelete(cuenta._id)}>
+              Eliminar
+            </button>
           </div>
         </div>
       ))}

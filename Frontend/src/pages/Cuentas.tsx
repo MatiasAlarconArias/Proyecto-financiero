@@ -7,15 +7,19 @@ import ListaCuentas from '../Componentes/Cuenta/ListaCuentas';
 
 export default function Cuentas() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0); // 👈 clave para forzar refetch
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const toggleFormulario = () => {
     setMostrarFormulario(!mostrarFormulario);
   };
 
   const handleCuentaCreada = () => {
-    setRefreshKey((prev) => prev + 1); // 👈 cada vez que se crea, recarga lista y cards
-    setMostrarFormulario(false); // 👈 opcional: cerrar formulario después de crear
+    setRefreshKey((prev) => prev + 1);
+    setMostrarFormulario(false);
+  };
+
+  const handleCuentaEliminada = () => {
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (
@@ -36,7 +40,7 @@ export default function Cuentas() {
       </section>
 
       <section className="Container">
-        <ListaCuentas key={refreshKey} />
+        <ListaCuentas key={refreshKey} onCuentaEliminada={handleCuentaEliminada} />
       </section>
     </>
   );
