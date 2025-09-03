@@ -17,6 +17,7 @@ exports.createAccount = async (req, res) => {
       availableCredit,
       statementCloseDay,
       paymentDueDay,
+      bankName, // 👈 nuevo campo
     } = req.body;
 
     if (type === 'Crédito') {
@@ -37,6 +38,7 @@ exports.createAccount = async (req, res) => {
       availableCredit,
       statementCloseDay,
       paymentDueDay,
+      bankName, // 👈 guardar en BD
     });
 
     await account.save();

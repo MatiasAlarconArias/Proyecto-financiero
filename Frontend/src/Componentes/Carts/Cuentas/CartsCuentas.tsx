@@ -10,21 +10,21 @@ export default function CartsCuentas() {
     const fetchData = async () => {
       try {
         // Activos Totales
-        const resActivos = await fetch('http://localhost:4000/api/accounts/totals/non-credit', {
+        const resActivos = await fetch('http://localhost:3000/api/accounts/totals/non-credit', {
           credentials: 'include',
         });
         const dataActivos = await resActivos.json();
         setActivos(dataActivos.totalBalance ?? 0);
 
         // Deudas Totales
-        const resDeudas = await fetch('http://localhost:4000/api/accounts/totals/credit', {
+        const resDeudas = await fetch('http://localhost:3000/api/accounts/totals/credit', {
           credentials: 'include',
         });
         const dataDeudas = await resDeudas.json();
         setDeudas(dataDeudas.totalDebt ?? 0);
 
         // Patrimonio Neto
-        const resPatrimonio = await fetch('http://localhost:4000/api/accounts/totals/net-worth', {
+        const resPatrimonio = await fetch('http://localhost:3000/api/accounts/totals/net-worth', {
           credentials: 'include',
         });
         const dataPatrimonio = await resPatrimonio.json();

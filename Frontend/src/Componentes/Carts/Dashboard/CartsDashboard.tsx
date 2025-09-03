@@ -7,7 +7,7 @@ export default function CartsDashboard() {
   useEffect(() => {
     const fetchTotalBalance = async () => {
       try {
-        const res = await fetch('http://localhost:4000/api/accounts/totals/all', {
+        const res = await fetch('http://localhost:3000/api/accounts/totals/all', {
           credentials: 'include',
         });
         const data = await res.json();

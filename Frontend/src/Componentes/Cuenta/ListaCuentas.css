@@ -1,0 +1,92 @@
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-base);
+}
+
+.account-card {
+  background: var(--color-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-base);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.account-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account-title {
+  font-size: var(--font-size-heading);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.account-subtitle {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-small);
+}
+
+.account-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+}
+
+.account-balance {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: var(--spacing-medium) 0;
+  color: var(--color-secondary); /* verde por defecto */
+}
+
+.account-balance.credit {
+  color: var(--color-tertiary); /* rojo para crédito */
+}
+
+.account-actions {
+  display: flex;
+  gap: var(--spacing-small);
+  margin-top: var(--spacing-medium);
+}
+
+.btn-secondary {
+  background: var(--button-secondary-bg);
+  border: 1px solid var(--button-secondary-border);
+  color: var(--button-secondary-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.btn-secondary:hover {
+  filter: brightness(var(--button-hover-brightness));
+}
+
+.btn-danger {
+  background: var(--color-tertiary);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.btn-danger:hover {
+  filter: brightness(var(--button-hover-brightness));
+}
