@@ -1,0 +1,21 @@
+.Crear-cuenta button {
+  background-color: #0f1111; /* fondo oscuro */
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem; /* más alto y más ancho */
+  display: inline-flex; /* flex pero respetando el tamaño */
+  align-items: center; /* centra verticalmente */
+  justify-content: center; /* centra horizontalmente */
+  gap: 8px; /* espacio entre + y texto */
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  line-height: 1; /* evita que el texto se desplace */
+  margin-bottom: 1rem;
+}
+
+.Crear-cuenta button:focus {
+  outline: none;
+}

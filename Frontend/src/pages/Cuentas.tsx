@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './Cuentas.css';
 import NavBar from '../Componentes/navBar/navBar';
 import CartsCuentas from '../Componentes/Carts/Cuentas/CartsCuentas';
 import CrearCuenta from '../Componentes/CrearCuenta/CrearCuenta';
@@ -21,7 +22,9 @@ export default function Cuentas() {
         </div>
       </section>
       <section className="Container Crear-cuenta">
-        <button onClick={toggleFormulario}>{mostrarFormulario ? 'Cerrar' : 'Crear Cuenta'}</button>
+        <button onClick={toggleFormulario}>
+          {mostrarFormulario ? 'Cerrar' : '+ Agregar Cuenta'}
+        </button>
         {mostrarFormulario && <CrearCuenta />}
       </section>
     </>
