@@ -10,11 +10,8 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
     bankName: '',
     type: 'Corriente',
     currency: 'CLP',
-    balance: 0,
     creditLimit: '',
     availableCredit: '',
-    statementCloseDay: '',
-    paymentDueDay: '',
   });
 
   const [mensaje, setMensaje] = useState('');
@@ -40,13 +37,12 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
           type: formData.type,
           currency: formData.currency,
           number: Math.floor(10000000 + Math.random() * 90000000).toString(),
-          balance: formData.type !== 'Crédito' ? formData.balance : 0,
+          balance: 0, // siempre parte en 0
           creditLimit: formData.type === 'Crédito' ? Number(formData.creditLimit) : undefined,
           availableCredit:
-            formData.type === 'Crédito' ? Number(formData.availableCredit) : undefined,
-          statementCloseDay:
-            formData.type === 'Crédito' ? Number(formData.statementCloseDay) : undefined,
-          paymentDueDay: formData.type === 'Crédito' ? Number(formData.paymentDueDay) : undefined,
+            formData.type === 'Crédito'
+              ? Number(formData.availableCredit) || Number(formData.creditLimit)
+              : undefined,
           bankName: formData.bankName,
         }),
       });
@@ -60,19 +56,14 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
       setMensaje('✅ Cuenta creada con éxito');
       console.log('Cuenta creada:', data);
 
-      // Avisar al padre para refrescar lista y cards
       if (onCuentaCreada) onCuentaCreada();
 
-      // Reiniciar formulario
       setFormData({
         bankName: '',
         type: 'Corriente',
         currency: 'CLP',
-        balance: 0,
         creditLimit: '',
         availableCredit: '',
-        statementCloseDay: '',
-        paymentDueDay: '',
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -120,63 +111,19 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
           </div>
         </div>
 
-        {/* Saldo si no es crédito */}
-        {formData.type !== 'Crédito' && (
-          <div className="campo">
-            <label>Saldo Inicial</label>
-            <input type="number" name="balance" value={formData.balance} onChange={handleChange} />
-          </div>
-        )}
-
-        {/* Datos si es crédito */}
+        {/* Datos solo si es crédito */}
         {formData.type === 'Crédito' && (
-          <>
-            <div className="fila">
-              <div className="campo">
-                <label>Límite de Crédito</label>
-                <input
-                  type="number"
-                  name="creditLimit"
-                  value={formData.creditLimit}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="campo">
-                <label>Crédito Disponible</label>
-                <input
-                  type="number"
-                  name="availableCredit"
-                  value={formData.availableCredit}
-                  onChange={handleChange}
-                />
-              </div>
+          <div className="fila">
+            <div className="campo">
+              <label>Límite de Crédito</label>
+              <input
+                type="number"
+                name="creditLimit"
+                value={formData.creditLimit}
+                onChange={handleChange}
+              />
             </div>
-
-            <div className="fila">
-              <div className="campo">
-                <label>Día de Cierre</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="28"
-                  name="statementCloseDay"
-                  value={formData.statementCloseDay}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="campo">
-                <label>Día de Pago</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="28"
-                  name="paymentDueDay"
-                  value={formData.paymentDueDay}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </>
+          </div>
         )}
 
         {/* Botones */}
@@ -190,7 +137,6 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
         </div>
       </form>
 
-      {/* Mensaje */}
       {mensaje && <p className="mensaje">{mensaje}</p>}
     </div>
   );

@@ -8,20 +8,10 @@ const Account = require('../models/Account.model');
 // Crear cuenta
 exports.createAccount = async (req, res) => {
   try {
-    const {
-      type,
-      currency,
-      number,
-      balance,
-      creditLimit,
-      availableCredit,
-      statementCloseDay,
-      paymentDueDay,
-      bankName, // 👈 nuevo campo
-    } = req.body;
+    const { type, currency, number, balance, creditLimit, availableCredit, bankName } = req.body;
 
     if (type === 'Crédito') {
-      if (!creditLimit || !availableCredit || !statementCloseDay || !paymentDueDay) {
+      if (!creditLimit || !availableCredit) {
         return res
           .status(400)
           .json({ message: 'Los campos de crédito son obligatorios para cuentas de tipo Crédito' });
@@ -36,9 +26,7 @@ exports.createAccount = async (req, res) => {
       balance,
       creditLimit,
       availableCredit,
-      statementCloseDay,
-      paymentDueDay,
-      bankName, // 👈 guardar en BD
+      bankName,
     });
 
     await account.save();
@@ -72,10 +60,10 @@ exports.getAccountById = async (req, res) => {
 // Actualizar cuenta
 exports.updateAccount = async (req, res) => {
   try {
-    const { type, creditLimit, availableCredit, statementCloseDay, paymentDueDay } = req.body;
+    const { type, creditLimit, availableCredit } = req.body;
 
     if (type === 'Crédito') {
-      if (!creditLimit || !availableCredit || !statementCloseDay || !paymentDueDay) {
+      if (!creditLimit || !availableCredit) {
         return res
           .status(400)
           .json({ message: 'Los campos de crédito son obligatorios para cuentas de tipo Crédito' });

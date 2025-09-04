@@ -13,16 +13,15 @@ const accountSchema = new mongoose.Schema(
       enum: ['CLP', 'USD'],
       required: true,
     },
-    number: { type: String, unique: true, required: true },
+    number: { type: String, unique: true, required: true }, // generado automáticamente
     balance: { type: Number, default: 0 },
 
-    // 👇 nuevo campo
-    bankName: { type: String },
-
+    // Solo aplica si type = "Crédito"
     creditLimit: { type: Number },
     availableCredit: { type: Number },
-    statementCloseDay: { type: Number, min: 1, max: 28 },
-    paymentDueDay: { type: Number, min: 1, max: 28 },
+
+    // Nombre del banco (agregado para tu app)
+    bankName: { type: String },
   },
   { timestamps: true }
 );
