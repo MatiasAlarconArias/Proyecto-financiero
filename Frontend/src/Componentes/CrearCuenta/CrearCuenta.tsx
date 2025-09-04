@@ -10,6 +10,7 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
     bankName: '',
     type: 'Corriente',
     currency: 'CLP',
+    balance: '', // 👈 agregado
     creditLimit: '',
     availableCredit: '',
   });
@@ -37,7 +38,7 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
           type: formData.type,
           currency: formData.currency,
           number: Math.floor(10000000 + Math.random() * 90000000).toString(),
-          balance: 0, // siempre parte en 0
+          balance: formData.type !== 'Crédito' ? Number(formData.balance) || 0 : 0,
           creditLimit: formData.type === 'Crédito' ? Number(formData.creditLimit) : undefined,
           availableCredit:
             formData.type === 'Crédito'
@@ -62,6 +63,7 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
         bankName: '',
         type: 'Corriente',
         currency: 'CLP',
+        balance: '',
         creditLimit: '',
         availableCredit: '',
       });
@@ -110,6 +112,14 @@ export default function CrearCuenta({ onCuentaCreada }: CrearCuentaProps) {
             </select>
           </div>
         </div>
+
+        {/* Saldo inicial solo si no es crédito */}
+        {formData.type !== 'Crédito' && (
+          <div className="campo">
+            <label>Saldo Inicial</label>
+            <input type="number" name="balance" value={formData.balance} onChange={handleChange} />
+          </div>
+        )}
 
         {/* Datos solo si es crédito */}
         {formData.type === 'Crédito' && (
