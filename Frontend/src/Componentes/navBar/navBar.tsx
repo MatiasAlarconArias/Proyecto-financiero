@@ -40,7 +40,7 @@ export default function NavBar() {
                 <a href="/cuentas">Cuentas</a>
               </li>
               <li>
-                <a href="/dashboard">Transacciones</a>
+                <a href="/transaction">Transacciones</a>
               </li>
               <li>
                 <a href="/dashboard">Presupuesto</a>

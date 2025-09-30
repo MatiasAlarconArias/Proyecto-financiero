@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser'); // ⬅️ Necesario para leer coo
 const authRoutes = require('./routes/auth.routes');
 const transactionRoutes = require('./routes/Transaction.routes');
 const accountRoutes = require('./routes/Account.routes');
+const categoryRoutes = require('./routes/Category.routes');
 const app = express();
 
 // ✅ Middleware para aceptar JSON
@@ -30,6 +31,7 @@ app.use(morgan('dev'));
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/accounts', accountRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // ✅ Conexión a la base de datos
 connectDB();

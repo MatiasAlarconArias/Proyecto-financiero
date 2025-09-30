@@ -4,6 +4,7 @@ import FormRegister from './Componentes/Formularios/FormRegister'; // 👈 impor
 import PrivateRoute from './Componentes/auth/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import Cuentas from './pages/Cuentas';
+import Transaction from './pages/Transaction';
 import './Globals/Styles.css';
 import './App.css';
 
@@ -28,6 +29,14 @@ function App() {
           element={
             <PrivateRoute>
               <Cuentas />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/transaction"
+          element={
+            <PrivateRoute>
+              <Transaction />
             </PrivateRoute>
           }
         />
