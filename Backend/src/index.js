@@ -7,6 +7,8 @@ const authRoutes = require('./routes/auth.routes');
 const transactionRoutes = require('./routes/Transaction.routes');
 const accountRoutes = require('./routes/Account.routes');
 const categoryRoutes = require('./routes/Category.routes');
+const budgetRoutes = require('./routes/Budget.routes');
+const savinggoalRoutes = require('./routes/Savinggoal.routes');
 const app = express();
 
 // ✅ Middleware para aceptar JSON
@@ -32,7 +34,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use('/api/categories', categoryRoutes);
-
+app.use('/api/budgets', budgetRoutes);
+app.use('/api/savinggoals', savinggoalRoutes);
 // ✅ Conexión a la base de datos
 connectDB();
 
