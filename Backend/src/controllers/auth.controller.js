@@ -33,12 +33,10 @@ exports.createUser = async (req, res) => {
       createdAt: userSaved.createdAt,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: 'Error al registrar usuario. Posiblemente el correo ya está en uso.',
-        error,
-      });
+    res.status(500).json({
+      message: 'Error al registrar usuario. Posiblemente el correo ya está en uso.',
+      error,
+    });
   }
 };
 
@@ -85,4 +83,17 @@ exports.logoutUser = (req, res) => {
     expires: new Date(0),
   });
   return res.sendStatus(200);
+};
+
+// Obtener usuario autenticado
+exports.getLoggedUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuario', error: error.message });
+  }
 };
