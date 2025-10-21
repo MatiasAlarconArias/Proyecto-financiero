@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Transaction.css';
 import NavBar from '../Componentes/navBar/navBar';
+import CrearTransaccion from './../Componentes/CrearTransaccion/CrearTransaccion';
 
 export default function Transaction() {
   const [accounts, setAccounts] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async (
@@ -12,9 +15,7 @@ export default function Transaction() {
       setFn: React.Dispatch<React.SetStateAction<string[]>>
     ) => {
       try {
-        const res = await fetch(url, {
-          credentials: 'include',
-        });
+        const res = await fetch(url, { credentials: 'include' });
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
@@ -45,39 +46,48 @@ export default function Transaction() {
       <main className="transactions-page">
         <div className="page-top">
           <h2 className="title">Transacciones</h2>
-          <button className="btn-new">+ Nueva Transacción</button>
+          <button className="btn-new" onClick={() => setMostrarFormulario(!mostrarFormulario)}>
+            + Nueva Transacción
+          </button>
         </div>
 
-        <section className="controls-card">
-          <div className="search">
+        {/* ✅ Formulario debajo del título */}
+        {mostrarFormulario && (
+          <div className="form-container">
+            <CrearTransaccion
+              onClose={() => setMostrarFormulario(false)}
+              categories={categories}
+              accounts={accounts}
+            />
+          </div>
+        )}
+
+        {/* 🔍 Barra de búsqueda y filtros */}
+        <div className="filters-bar">
+          <div className="search-input-container">
             <span className="search-icon">🔍</span>
-            <input className="search-input" placeholder="Buscar transacciones..." />
+            <input
+              type="text"
+              placeholder="Buscar transacciones..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
 
-          <div className="filters">
-            {accounts.length > 0 && (
-              <select className="select moderno" aria-label="Filtrar por cuenta">
-                <option value="">Todas las cuentas</option>
-                {accounts.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
-                ))}
-              </select>
-            )}
+          <select className="filter-select">
+            <option value="">Todas las cuentas</option>
+            {accounts.map((a) => (
+              <option key={a}>{a}</option>
+            ))}
+          </select>
 
-            {categories.length > 0 && (
-              <select className="select moderno" aria-label="Filtrar por categoría">
-                <option value="">Todas las categorías</option>
-                {categories.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-        </section>
+          <select className="filter-select">
+            <option value="">Todas las categorías</option>
+            {categories.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+        </div>
       </main>
     </>
   );
