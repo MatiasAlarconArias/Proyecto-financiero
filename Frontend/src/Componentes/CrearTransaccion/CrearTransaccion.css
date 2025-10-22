@@ -9,14 +9,14 @@
 .form-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--box-shadow, 0 2px 6px rgba(0, 0, 0, 0.1));
   padding: 20px 28px;
   margin-bottom: 25px;
   animation: fadeIn 0.25s ease-in-out;
 }
 
 .form-card h3 {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #222;
   margin-bottom: 15px;
@@ -51,7 +51,7 @@
   border-radius: 8px;
   border: 1px solid #ddd;
   background-color: #f8f9fb;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   outline: none;
   transition: border 0.2s ease;
 }

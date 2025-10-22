@@ -46,8 +46,8 @@ export default function Transaction() {
       <main className="transactions-page">
         <div className="page-top">
           <h2 className="title">Transacciones</h2>
-          <button className="btn-new" onClick={() => setMostrarFormulario(!mostrarFormulario)}>
-            + Nueva Transacción
+          <button className="btn-new" onClick={() => setMostrarFormulario((prev) => !prev)}>
+            {mostrarFormulario ? 'Cancelar' : '+ Nueva Transacción'}
           </button>
         </div>
 
