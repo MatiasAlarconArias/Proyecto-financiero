@@ -1,29 +1,71 @@
 import React, { useState } from 'react';
 import './CrearTransaccion.css';
+import type { AccountItem, CategoryItem } from '../../pages/Transaction';
 
 interface Props {
   onClose: () => void;
-  categories: string[];
-  accounts: string[];
+  categories: CategoryItem[];
+  accounts: AccountItem[];
+  onTransactionAdded: () => void;
 }
 
-export default function CrearTransaccion({ onClose, categories, accounts }: Props) {
+export default function CrearTransaccion({ onClose, categories, accounts, onTransactionAdded }: Props) {
   const [descripcion, setDescripcion] = useState('');
-  const [monto, setMonto] = useState(0);
+  const [monto, setMonto] = useState('');
   const [tipo, setTipo] = useState('Gasto');
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
-  const [categoria, setCategoria] = useState('');
-  const [cuenta, setCuenta] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [accountId, setAccountId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleAgregar = (e: React.FormEvent) => {
+  const handleAgregar = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ descripcion, monto, tipo, fecha, categoria, cuenta });
-    onClose();
+    setError('');
+    
+    if (!descripcion || !monto || !categoryId || !accountId) {
+      setError('Por favor completa todos los campos requeridos.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/transactions', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          description: descripcion,
+          amount: parseFloat(monto),
+          type: tipo,
+          date: fecha,
+          categoryId: categoryId,
+          accountId: accountId
+        }),
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        onTransactionAdded();
+        onClose();
+      } else {
+        const data = await res.json();
+        setError(data.message || 'Error al guardar la transacción');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Error de conexión');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="form-card">
       <h3>Agregar Nueva Transacción</h3>
+
+      {error && <p className="error-msg">{error}</p>}
 
       <form onSubmit={handleAgregar}>
         <div className="form-row">
@@ -39,7 +81,7 @@ export default function CrearTransaccion({ onClose, categories, accounts }: Prop
 
           <div className="form-group">
             <label>Monto</label>
-            <input type="number" value={monto} onChange={(e) => setMonto(Number(e.target.value))} />
+            <input type="number" value={monto} onChange={(e) => setMonto(e.target.value)} />
           </div>
 
           <div className="form-group">
@@ -57,30 +99,30 @@ export default function CrearTransaccion({ onClose, categories, accounts }: Prop
 
           <div className="form-group">
             <label>Categoría</label>
-            <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
               <option value="">Seleccionar categoría</option>
               {categories.map((c) => (
-                <option key={c}>{c}</option>
+                <option key={c._id} value={c._id}>{c.name}</option>
               ))}
             </select>
           </div>
 
           <div className="form-group">
             <label>Cuenta</label>
-            <select value={cuenta} onChange={(e) => setCuenta(e.target.value)}>
+            <select value={accountId} onChange={(e) => setAccountId(e.target.value)}>
               <option value="">Seleccionar cuenta</option>
               {accounts.map((a) => (
-                <option key={a}>{a}</option>
+                <option key={a._id} value={a._id}>{a.bankName || a.type}</option>
               ))}
             </select>
           </div>
         </div>
 
         <div className="form-buttons">
-          <button type="submit" className="btn-primary">
-            Agregar
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? 'Guardando...' : 'Agregar'}
           </button>
-          <button type="button" className="btn-secondary" onClick={onClose}>
+          <button type="button" className="btn-secondary" onClick={onClose} disabled={loading}>
             Cancelar
           </button>
         </div>
