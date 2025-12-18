@@ -7,6 +7,9 @@ export interface AccountItem {
   _id: string;
   bankName: string;
   type: string;
+  balance: number;
+  creditLimit?: number;
+  availableCredit?: number;
 }
 
 export interface CategoryItem {

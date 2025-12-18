@@ -28,6 +28,27 @@ export default function CrearTransaccion({ onClose, categories, accounts, onTran
       return;
     }
 
+    // Validación de saldo/crédito
+    const selectedAccount = accounts.find(acc => acc._id === accountId);
+    if (selectedAccount && tipo === 'Gasto') {
+      const amountValue = parseFloat(monto);
+      
+      if (selectedAccount.type === 'Crédito') {
+        const available = selectedAccount.availableCredit || 0;
+        if (amountValue > available) {
+          setError(`El monto excede el crédito disponible (${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(available)})`);
+          return;
+        }
+      } else {
+        // Cuentas de débito/ahorro/etc
+        const balance = selectedAccount.balance || 0;
+        if (amountValue > balance) {
+          setError(`El monto excede el saldo disponible (${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(balance)})`);
+          return;
+        }
+      }
+    }
+
     setLoading(true);
     try {
       const res = await fetch('/api/transactions', {
