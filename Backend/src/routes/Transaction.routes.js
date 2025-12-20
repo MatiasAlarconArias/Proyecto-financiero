@@ -16,5 +16,7 @@ router.delete('/:id', authenticateToken, transactionController.deleteTransaction
 // Rutas para dashboard
 // ======================
 router.get('/summary/month', authenticateToken, transactionController.getTransactionSummary);
+router.get('/stats/monthly-trends', authenticateToken, transactionController.getMonthlyTrends);
+router.get('/stats/expenses-by-category', authenticateToken, transactionController.getExpensesByCategory);
 
 module.exports = router;

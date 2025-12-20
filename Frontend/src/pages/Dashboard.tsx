@@ -1,5 +1,6 @@
 import NavBar from '../Componentes/navBar/navBar';
 import CartsDashboard from '../Componentes/Carts/Dashboard/CartsDashboard';
+import DashboardCharts from '../Componentes/Carts/Dashboard/DashboardCharts';
 import OpcionesRapidas from '../Componentes/OpcionesRapidas/OpcionesRapidas';
 
 export default function Dashboard() {
@@ -11,6 +12,7 @@ export default function Dashboard() {
       <section>
         <div className="Container">
           <CartsDashboard />
+          <DashboardCharts />
         </div>
       </section>
       <section>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Transaction.css';
 import NavBar from '../Componentes/navBar/navBar';
-import CrearTransaccion from './../Componentes/CrearTransaccion/CrearTransaccion';
+import CrearTransaccion from '../Componentes/CrearTransaccion/CrearTransaccion';
 
 export interface AccountItem {
   _id: string;

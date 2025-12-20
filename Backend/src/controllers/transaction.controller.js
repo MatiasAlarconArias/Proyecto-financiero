@@ -1,4 +1,5 @@
 // controllers/transaction.controller.js
+const mongoose = require('mongoose');
 const Transaction = require('../models/transaction.model');
 const Account = require('../models/Account.model');
 const Category = require('../models/Category.model');
@@ -169,6 +170,112 @@ const getTransactionSummary = async (req, res) => {
   }
 };
 
+// Tendencias mensuales (últimos 6 meses)
+const getMonthlyTrends = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const today = new Date();
+    // 5 meses atrás + mes actual = 6 meses
+    const sixMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 5, 1);
+
+    const stats = await Transaction.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          date: { $gte: sixMonthsAgo },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$date' },
+            month: { $month: '$date' },
+            type: '$type',
+          },
+          total: { $sum: '$amount' },
+        },
+      },
+      {
+        $sort: { '_id.year': 1, '_id.month': 1 },
+      },
+    ]);
+
+    // Formatear datos para el frontend
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const formattedData = [];
+
+    // Generar últimos 6 meses vacíos para rellenar
+    for (let i = 0; i < 6; i++) {
+        const d = new Date(today.getFullYear(), today.getMonth() - 5 + i, 1);
+        const monthIndex = d.getMonth();
+        const year = d.getFullYear();
+        const monthName = months[monthIndex];
+        
+        const incomeStat = stats.find(s => s._id.month === monthIndex + 1 && s._id.year === year && s._id.type === 'Ingreso');
+        const expenseStat = stats.find(s => s._id.month === monthIndex + 1 && s._id.year === year && s._id.type === 'Gasto');
+
+        formattedData.push({
+            name: monthName,
+            Ingresos: incomeStat ? incomeStat.total : 0,
+            Gastos: expenseStat ? expenseStat.total : 0
+        });
+    }
+
+    res.json(formattedData);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Gastos por categoría (mes actual)
+const getExpensesByCategory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const today = new Date();
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59);
+
+    const stats = await Transaction.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          date: { $gte: startOfMonth, $lte: endOfMonth },
+          type: 'Gasto',
+        },
+      },
+      {
+        $group: {
+          _id: '$categoryId',
+          value: { $sum: '$amount' },
+        },
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      {
+        $unwind: '$category',
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$category.name',
+          value: 1,
+        },
+      },
+      { $sort: { value: -1 } }
+    ]);
+
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createTransaction,
   getTransactions,
@@ -176,4 +283,6 @@ module.exports = {
   updateTransaction,
   deleteTransaction,
   getTransactionSummary,
+  getMonthlyTrends,
+  getExpensesByCategory,
 };
