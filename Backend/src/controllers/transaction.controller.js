@@ -30,9 +30,34 @@ const createTransaction = async (req, res) => {
     });
     await transaction.save();
 
-    // actualizar balance
-    if (type === 'Ingreso') account.balance += amount;
-    if (type === 'Gasto') account.balance -= amount;
+    // Actualizar balance según tipo de cuenta
+    if (account.type === 'Crédito') {
+      if (type === 'Gasto') {
+        const newBalance = account.balance + amount;
+        // Validar límite de crédito si existe
+        if (account.creditLimit && newBalance > account.creditLimit) {
+           return res.status(400).json({ message: 'El gasto excede el límite de crédito disponible.' });
+        }
+        account.balance = newBalance;
+      } else if (type === 'Ingreso') {
+          // Pago de tarjeta (reduce la deuda) - Validar que no pague más de lo que debe
+          if (account.balance - amount < 0) {
+             return res.status(400).json({ message: 'El pago excede la deuda actual.' });
+          }
+          account.balance -= amount;
+      }
+      
+      // Recalcular crédito disponible
+      if (account.creditLimit !== undefined) {
+          account.availableCredit = account.creditLimit - account.balance;
+      }
+
+    } else {
+        // Cuentas normales (Corriente, Ahorros, Inversión)
+        if (type === 'Ingreso') account.balance += amount;
+        if (type === 'Gasto') account.balance -= amount;
+    }
+    
     await account.save();
 
     res.status(201).json(transaction);
@@ -95,9 +120,15 @@ const updateTransaction = async (req, res) => {
 
     const account = await Account.findById(transaction.accountId);
 
-    // revertir saldo previo
-    if (transaction.type === 'Ingreso') account.balance -= transaction.amount;
-    if (transaction.type === 'Gasto') account.balance += transaction.amount;
+    // Lógica para revertir saldo previo
+    if (account.type === 'Crédito') {
+      if (transaction.type === 'Ingreso') account.balance += transaction.amount; // Devolver el pago (aumenta deuda)
+      if (transaction.type === 'Gasto') account.balance -= transaction.amount;   // Quitar el gasto (baja deuda)
+    } else {
+      // Cuentas normales
+      if (transaction.type === 'Ingreso') account.balance -= transaction.amount;
+      if (transaction.type === 'Gasto') account.balance += transaction.amount;
+    }
 
     if (description) transaction.description = description;
     if (categoryId) transaction.categoryId = categoryId;
@@ -105,9 +136,30 @@ const updateTransaction = async (req, res) => {
 
     await transaction.save();
 
-    // aplicar nuevo saldo
-    if (transaction.type === 'Ingreso') account.balance += transaction.amount;
-    if (transaction.type === 'Gasto') account.balance -= transaction.amount;
+    // Lógica para aplicar nuevo saldo
+    if (account.type === 'Crédito') {
+      if (transaction.type === 'Gasto') {
+        const newBalance = account.balance + transaction.amount;
+        if (account.creditLimit && newBalance > account.creditLimit) {
+           return res.status(400).json({ message: 'El gasto actualizado excede el límite de crédito.' });
+        }
+        account.balance = newBalance;
+      } else if (transaction.type === 'Ingreso') {
+         if (account.balance - transaction.amount < 0) {
+             return res.status(400).json({ message: 'El pago actualizado excede la deuda actual.' });
+         }
+         account.balance -= transaction.amount;
+      }
+      
+      if (account.creditLimit !== undefined) {
+          account.availableCredit = account.creditLimit - account.balance;
+      }
+    } else {
+       // Cuentas normales
+       if (transaction.type === 'Ingreso') account.balance += transaction.amount;
+       if (transaction.type === 'Gasto') account.balance -= transaction.amount;
+    }
+    
     await account.save();
 
     res.json(transaction);
@@ -127,8 +179,20 @@ const deleteTransaction = async (req, res) => {
 
     const account = await Account.findById(transaction.accountId);
 
-    if (transaction.type === 'Ingreso') account.balance -= transaction.amount;
-    if (transaction.type === 'Gasto') account.balance += transaction.amount;
+    if (account.type === 'Crédito') {
+        // Revertir en cuenta de crédito
+        if (transaction.type === 'Ingreso') account.balance += transaction.amount; // Revertir pago -> Aumenta deuda
+        if (transaction.type === 'Gasto') account.balance -= transaction.amount;   // Revertir gasto -> Baja deuda
+
+        if (account.creditLimit !== undefined) {
+          account.availableCredit = account.creditLimit - account.balance;
+        }
+    } else {
+        // Cuentas normales
+        if (transaction.type === 'Ingreso') account.balance -= transaction.amount;
+        if (transaction.type === 'Gasto') account.balance += transaction.amount;
+    }
+    
     await account.save();
 
     await transaction.deleteOne();

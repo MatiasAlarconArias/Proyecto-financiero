@@ -8,14 +8,18 @@ const Account = require('../models/Account.model');
 // Crear cuenta
 exports.createAccount = async (req, res) => {
   try {
-    const { type, currency, number, balance, creditLimit, availableCredit, bankName } = req.body;
+    const { type, currency, number, balance, creditLimit, bankName } = req.body;
+
+    let finalAvailableCredit = req.body.availableCredit;
 
     if (type === 'Crédito') {
-      if (!creditLimit || !availableCredit) {
+      if (!creditLimit) {
         return res
           .status(400)
-          .json({ message: 'Los campos de crédito son obligatorios para cuentas de tipo Crédito' });
+          .json({ message: 'El límite de crédito es obligatorio para cuentas de tipo Crédito' });
       }
+      // Calcular crédito disponible automáticamente
+      finalAvailableCredit = creditLimit - (balance || 0);
     }
 
     const account = new Account({
@@ -25,7 +29,7 @@ exports.createAccount = async (req, res) => {
       number,
       balance,
       creditLimit,
-      availableCredit,
+      availableCredit: finalAvailableCredit,
       bankName,
     });
 
@@ -60,23 +64,30 @@ exports.getAccountById = async (req, res) => {
 // Actualizar cuenta
 exports.updateAccount = async (req, res) => {
   try {
-    const { type, creditLimit, availableCredit } = req.body;
+    const { type, creditLimit, balance } = req.body;
+    
+    // Buscar primero para tener los datos actuales
+    const account = await Account.findOne({ _id: req.params.id, userId: req.user.id });
+    if (!account) return res.status(404).json({ message: 'Cuenta no encontrada' });
 
-    if (type === 'Crédito') {
-      if (!creditLimit || !availableCredit) {
-        return res
-          .status(400)
-          .json({ message: 'Los campos de crédito son obligatorios para cuentas de tipo Crédito' });
-      }
+    // Actualizar campos permitidos
+    const allowedUpdates = ['name', 'bankName', 'currency', 'number', 'balance', 'creditLimit', 'type']; // Agrega los que necesites
+    Object.keys(req.body).forEach((key) => {
+        if (allowedUpdates.includes(key)) {
+            account[key] = req.body[key];
+        }
+    });
+
+    // Lógica especial para Crédito
+    if (account.type === 'Crédito') {
+        if (!account.creditLimit) {
+             return res.status(400).json({ message: 'Cuenta de crédito debe tener límite.' });
+        }
+        // Recalcular siempre availableCredit
+        account.availableCredit = account.creditLimit - (account.balance || 0);
     }
 
-    const account = await Account.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user.id },
-      req.body,
-      { new: true }
-    );
-
-    if (!account) return res.status(404).json({ message: 'Cuenta no encontrada' });
+    await account.save();
     res.json(account);
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar cuenta', error: error.message });
