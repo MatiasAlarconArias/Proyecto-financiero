@@ -144,7 +144,7 @@ export default function Transaction() {
           >
             <option value="">Todas las cuentas</option>
             {accounts.map((a) => (
-              <option key={a._id}>{a.bankName || a.type}</option>
+              <option key={a._id} value={a._id}>{a.bankName || a.type}</option>
             ))}
           </select>
 
@@ -155,7 +155,7 @@ export default function Transaction() {
           >
             <option value="">Todas las categorías</option>
             {categories.map((c) => (
-              <option key={c._id}>{c.name}</option>
+              <option key={c._id} value={c._id}>{c.name}</option>
             ))}
           </select>
         </div>
