@@ -43,7 +43,7 @@ export default function NavBar() {
                 <a href="/transaction">Transacciones</a>
               </li>
               <li>
-                <a href="/dashboard">Presupuesto</a>
+                <a href="/presupuesto">Presupuesto</a>
               </li>
               <li>
                 <a href="/dashboard">Metas</a>

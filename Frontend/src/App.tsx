@@ -5,6 +5,7 @@ import PrivateRoute from './Componentes/auth/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import Cuentas from './pages/Cuentas';
 import Transaction from './pages/Transaction';
+import Presupuesto from './pages/Presupuesto';
 import './Globals/Styles.css';
 import './App.css';
 
@@ -37,6 +38,14 @@ function App() {
           element={
             <PrivateRoute>
               <Transaction />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/presupuesto"
+          element={
+            <PrivateRoute>
+              <Presupuesto />
             </PrivateRoute>
           }
         />
