@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Transaction = require('../models/transaction.model');
 const Account = require('../models/Account.model');
 const Category = require('../models/Category.model');
+const Budget = require('../models/Budget.model');
 
 // Crear transacción
 const createTransaction = async (req, res) => {
@@ -59,6 +60,17 @@ const createTransaction = async (req, res) => {
     }
     
     await account.save();
+
+    // 🔹 Actualizar Presupuesto (Si es un Gasto)
+    if (type === 'Gasto') {
+        const budget = await Budget.findOne({ userId, categoryId });
+        if (budget) {
+            budget.spent += amount;
+            // Actualizar status
+            budget.status = budget.spent > budget.amount ? 'Excedido' : 'En buen camino';
+            await budget.save();
+        }
+    }
 
     res.status(201).json(transaction);
   } catch (error) {

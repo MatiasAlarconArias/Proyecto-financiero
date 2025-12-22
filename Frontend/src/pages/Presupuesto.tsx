@@ -33,6 +33,8 @@ export default function Presupuesto() {
         amount: '',
         period: 'Mensual'
     });
+    // Estado para saber si estamos editando un presupuesto (contiene el ID del presupuesto a editar)
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     useEffect(() => {
         // Función asíncrona para obtener los presupuestos de la API
@@ -77,26 +79,72 @@ export default function Presupuesto() {
         setNewBudget({ ...newBudget, [e.target.name]: e.target.value });
     };
 
-    const handleCreateBudget = async (e: React.FormEvent) => {
+    const handleSaveBudget = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/budgets', {
-                method: 'POST',
+            const method = editingId ? 'PUT' : 'POST';
+            const url = editingId ? `/api/budgets/${editingId}` : '/api/budgets';
+
+            const response = await fetch(url, {
+                method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newBudget),
             });
 
             if (response.ok) {
-                const createdBudget = await response.json();
-                setBudgets([...budgets, createdBudget]);
+                const savedBudget = await response.json();
+                
+                if (editingId) {
+                    // Actualizar el presupuesto existente en la lista
+                    setBudgets(budgets.map(b => b._id === editingId ? savedBudget : b));
+                } else {
+                    // Agregar el nuevo presupuesto a la lista
+                    setBudgets([...budgets, savedBudget]);
+                }
+                
                 setShowModal(false);
                 setNewBudget({ categoryId: '', amount: '', period: 'Mensual' }); // Reset form
+                setEditingId(null); // Reset editing state
             } else {
-                alert('Error al crear presupuesto');
+                alert('Error al guardar presupuesto');
             }
         } catch (error) {
-            console.error('Error creating budget:', error);
+            console.error('Error saving budget:', error);
         }
+    };
+
+    const handleEdit = (budget: Budget) => {
+        setEditingId(budget._id);
+        setNewBudget({
+            categoryId: budget.categoryId._id,
+            amount: budget.amount.toString(),
+            period: budget.period
+        });
+        setShowModal(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!window.confirm('¿Estás seguro de eliminar este presupuesto?')) return;
+        
+        try {
+            const response = await fetch(`/api/budgets/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                setBudgets(budgets.filter(b => b._id !== id));
+            } else {
+                alert('Error al eliminar presupuesto');
+            }
+        } catch (error) {
+            console.error('Error deleting budget:', error);
+        }
+    };
+
+    const openNewBudgetModal = () => {
+        setEditingId(null);
+        setNewBudget({ categoryId: '', amount: '', period: 'Mensual' });
+        setShowModal(true);
     };
 
     // Mostrar un mensaje de carga si los datos aún no están listos
@@ -185,7 +233,7 @@ export default function Presupuesto() {
 
                 <div className="Budget-Header-Section">
                     <h2>Mis Presupuestos</h2>
-                    <button className="Btn-New-Budget" onClick={() => setShowModal(true)}>+ Nuevo Presupuesto</button>
+                    <button className="Btn-New-Budget" onClick={openNewBudgetModal}>+ Nuevo Presupuesto</button>
                 </div>
 
                 <div className="Budget-List">
@@ -229,8 +277,8 @@ export default function Presupuesto() {
                                 </div>
 
                                 <div className="Budget-Actions">
-                                    <button className="Btn-Action Edit"><Edit2 size={16} /> Editar</button>
-                                    <button className="Btn-Action Delete"><Trash2 size={16} /> Eliminar</button>
+                                    <button className="Btn-Action Edit" onClick={() => handleEdit(budget)}><Edit2 size={16} /> Editar</button>
+                                    <button className="Btn-Action Delete" onClick={() => handleDelete(budget._id)}><Trash2 size={16} /> Eliminar</button>
                                 </div>
                             </div>
                          );
@@ -240,8 +288,8 @@ export default function Presupuesto() {
                 {showModal && (
                     <div className="Modal-Overlay">
                         <div className="Modal-Content">
-                            <h3>Nuevo Presupuesto</h3>
-                            <form onSubmit={handleCreateBudget}>
+                            <h3>{editingId ? 'Editar Presupuesto' : 'Nuevo Presupuesto'}</h3>
+                            <form onSubmit={handleSaveBudget}>
                                 <div className="Form-Group">
                                     <label>Categoría</label>
                                     <select 
@@ -280,7 +328,7 @@ export default function Presupuesto() {
                                 </div>
                                 <div className="Modal-Actions">
                                     <button type="button" className="Btn-Cancel" onClick={() => setShowModal(false)}>Cancelar</button>
-                                    <button type="submit" className="Btn-Submit">Crear Presupuesto</button>
+                                    <button type="submit" className="Btn-Submit">{editingId ? 'Guardar Cambios' : 'Crear Presupuesto'}</button>
                                 </div>
                             </form>
                         </div>

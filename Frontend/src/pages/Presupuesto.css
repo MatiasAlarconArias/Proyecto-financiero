@@ -186,8 +186,15 @@
 /* Budget List Styles */
 .Budget-List {
     display: grid;
+    grid-template-columns: 1fr;
     gap: 20px;
     margin-bottom: 40px;
+}
+
+@media (min-width: 900px) {
+    .Budget-List {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .Budget-Item-Card {
@@ -292,4 +299,14 @@
 
 .Btn-Action:hover {
     background-color: #f9f9f9;
+}
+
+.Btn-Action.Delete {
+    color: #EA4335;
+    border-color: #fad2cf;
+}
+
+.Btn-Action.Delete:hover {
+    background-color: #fce8e6;
+    border-color: #EA4335;
 }
