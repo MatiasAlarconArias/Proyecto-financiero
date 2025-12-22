@@ -190,7 +190,7 @@ exports.getProgress = async (req, res) => {
 // Obtener estadísticas de todas las metas de un usuario
 exports.getUserSavingStats = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const savingGoals = await Savinggoal.find({ userId });
 
     const totalGoals = savingGoals.length;

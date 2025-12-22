@@ -18,6 +18,6 @@ router.delete('/:id', authenticateToken, savinggoalController.deleteSavingGoal);
 router.post('/:id/add', authenticateToken, savinggoalController.addMoney);
 router.post('/:id/withdraw', authenticateToken, savinggoalController.withdrawMoney);
 router.get('/:id/progress', authenticateToken, savinggoalController.getProgress);
-router.get('/stats/:userId', authenticateToken, savinggoalController.getUserSavingStats);
+router.get('/stats/summary', authenticateToken, savinggoalController.getUserSavingStats);
 
 module.exports = router;
