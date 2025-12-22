@@ -46,7 +46,7 @@ export default function NavBar() {
                 <a href="/presupuesto">Presupuesto</a>
               </li>
               <li>
-                <a href="/dashboard">Metas</a>
+                <a href="/metas">Metas</a>
               </li>
               <li>
                 <a href="/categoria">Categoria</a>

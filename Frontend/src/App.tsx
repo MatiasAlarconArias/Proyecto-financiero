@@ -7,6 +7,7 @@ import Cuentas from './pages/Cuentas';
 import Transaction from './pages/Transaction';
 import Presupuesto from './pages/Presupuesto';
 import Categoria from './pages/Categoria';
+import Metas from './pages/Metas';
 import './Globals/Styles.css';
 import './App.css';
 
@@ -55,6 +56,14 @@ function App() {
           element={
             <PrivateRoute>
               <Categoria />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/metas"
+          element={
+            <PrivateRoute>
+              <Metas />
             </PrivateRoute>
           }
         />
