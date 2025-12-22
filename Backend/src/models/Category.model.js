@@ -9,7 +9,8 @@ const categorySchema = new mongoose.Schema(
       enum: ['Ingreso', 'Gasto'],
       required: true,
     },
-    icon: { type: String, default: null }, // opcional, para íconos en la UI
+    icon: { type: String, default: null },
+    color: { type: String, default: '#000000' },
   },
   { timestamps: true }
 );

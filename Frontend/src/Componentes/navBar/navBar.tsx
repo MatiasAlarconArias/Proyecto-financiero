@@ -49,7 +49,7 @@ export default function NavBar() {
                 <a href="/dashboard">Metas</a>
               </li>
               <li>
-                <a href="/dashboard">Categoria</a>
+                <a href="/categoria">Categoria</a>
               </li>
               <li>
                 {/* 🔹 Link que actúa como logout */}

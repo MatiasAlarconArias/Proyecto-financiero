@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Cuentas from './pages/Cuentas';
 import Transaction from './pages/Transaction';
 import Presupuesto from './pages/Presupuesto';
+import Categoria from './pages/Categoria';
 import './Globals/Styles.css';
 import './App.css';
 
@@ -46,6 +47,14 @@ function App() {
           element={
             <PrivateRoute>
               <Presupuesto />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/categoria"
+          element={
+            <PrivateRoute>
+              <Categoria />
             </PrivateRoute>
           }
         />

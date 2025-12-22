@@ -5,7 +5,7 @@ const Category = require('../models/Category.model');
 // Crear una nueva categoría
 exports.createCategory = async (req, res) => {
   try {
-    const { name, type, icon } = req.body;
+    const { name, type, icon, color } = req.body;
     const userId = req.user?.id || req.body.userId; // desde token o body
 
     // Validar duplicados por usuario
@@ -14,9 +14,9 @@ exports.createCategory = async (req, res) => {
       return res.status(400).json({ message: 'Ya existe una categoría con ese nombre y tipo' });
     }
 
-    const category = new Category({ userId, name, type, icon });
+    const category = new Category({ userId, name, type, icon, color });
     await category.save();
-
+    
     res.status(201).json(category);
   } catch (error) {
     res.status(500).json({
@@ -63,11 +63,11 @@ exports.getCategoryById = async (req, res) => {
 exports.updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, type, icon } = req.body;
+    const { name, type, icon, color } = req.body;
 
     const category = await Category.findByIdAndUpdate(
       id,
-      { name, type, icon },
+      { name, type, icon, color },
       { new: true, runValidators: true }
     );
 
